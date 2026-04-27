@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Courses</title>
+
+<!-- Icône pour iPhone (écran d'accueil) -->
+<link rel="apple-touch-icon" href="icone-hibou.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Courses">
+<meta name="theme-color" content="#2a1810">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bark-deep: #2a1810;
+    --bark: #3d2817;
+    --moss-deep: #2d3a1f;
+    --moss: #4a5d2f;
+    --moss-light: #7a8c5c;
+    --cream: #f4ead5;
+    --cream-warm: #ede0c4;
+    --rust: #a0522d;
+    --copper: #b87333;
+    --gold-soft: #d4a574;
+    --berry: #8b3a3a;
+    --shadow: rgba(42, 24, 16, 0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    overflow-x: hidden;
+    background-color: #2a1810;
+  }
+
+  html {
+    min-height: 100%;
+  }
+
+  body {
+    font-family: 'Fraunces', serif;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(122, 140, 92, 0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 90%, rgba(160, 82, 45, 0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 50%, #3d2817 0%, #2a1810 100%);
+    background-attachment: fixed;
+    background-color: #2a1810;
+    color: var(--cream);
+    min-height: 100vh;
+    padding: 20px 16px 80px;
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(80px, env(safe-area-inset-bottom));
+    position: relative;
+  }
+
+  /* Texture grain */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.85 0 0 0 0 0.65 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  /* Feuilles décoratives flottantes */
+  .leaf {
+    position: fixed;
+    pointer-events: none;
+    opacity: 0.12;
+    z-index: 0;
+  }
+  .leaf-1 { top: 8%; left: -20px; transform: rotate(-25deg); width: 80px; }
+  .leaf-2 { top: 60%; right: -30px; transform: rotate(40deg); width: 100px; }
+  .leaf-3 { bottom: 5%; left: 10%; transform: rotate(15deg); width: 60px; }
+
+  .container {
+    max-width: 540px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* HEADER avec hiboux */
+  header {
+    text-align: center;
+    padding: 12px 0 28px;
+  }
+
+  .owls-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+    animation: gentleSway 6s ease-in-out infinite;
+  }
+
+  @keyframes gentleSway {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-4px) rotate(1deg); }
+  }
+
+  .owls-svg {
+    width: 180px;
+    height: auto;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
+  }
+
+  /* Clignement des yeux */
+  .owl-eye {
+    transform-origin: center;
+    animation: blink 5s infinite;
+  }
+  .owl-right .owl-eye {
+    animation-delay: 0.3s;
+  }
+  @keyframes blink {
+    0%, 92%, 96%, 100% { transform: scaleY(1); }
+    94% { transform: scaleY(0.1); }
+  }
+
+  h1 {
+    font-family: 'Caveat', cursive;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--gold-soft);
+    line-height: 1;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--moss-light);
+    margin-top: 4px;
+    letter-spacing: 1px;
+    text-transform: lowercase;
+  }
+
+  /* Branche décorative */
+  .branch-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 0 24px;
+    opacity: 0.6;
+  }
+  .branch-divider::before,
+  .branch-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--copper), transparent);
+  }
+  .branch-divider span {
+    color: var(--copper);
+    font-size: 0.9rem;
+  }
+
+  /* INPUT */
+  .add-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    background: rgba(244, 234, 213, 0.08);
+    padding: 8px;
+    border-radius: 16px;
+    border: 1px solid rgba(212, 165, 116, 0.2);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(244, 234, 213, 0.1);
+  }
+
+  #itemInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--cream);
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    padding: 12px 14px;
+    font-style: italic;
+  }
+  #itemInput::placeholder {
+    color: rgba(244, 234, 213, 0.45);
+    font-style: italic;
+  }
+
+  .add-btn {
+    background: linear-gradient(135deg, var(--copper), var(--rust));
+    border: none;
+    color: var(--cream);
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(160, 82, 45, 0.4);
+    flex-shrink: 0;
+  }
+  .add-btn:active {
+    transform: scale(0.92);
+  }
+
+  /* SECTION TITLE */
+  .section-label {
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    color: var(--gold-soft);
+    margin-bottom: 12px;
+    padding-left: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label .count {
+    font-family: 'Fraunces', serif;
+    font-size: 0.85rem;
+    background: rgba(212, 165, 116, 0.15);
+    color: var(--gold-soft);
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  /* LISTE */
+  .list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .item {
+    background: rgba(244, 234, 213, 0.06);
+    border: 1px solid rgba(212, 165, 116, 0.18);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.4s ease-out;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .item:active {
+    transform: scale(0.98);
+    background: rgba(244, 234, 213, 0.1);
+  }
+
+  .checkbox {
+    width: 26px;
+    height: 26px;
+    border: 2px solid var(--moss-light);
+    border-radius: 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.15);
+    transition: all 0.2s;
+  }
+
+  .item-text {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    color: var(--cream);
+    flex: 1;
+    text-transform: lowercase;
+    letter-spacing: 0.3px;
+  }
+
+  /* Item coché → animation de disparition */
+  .item.checking {
+    animation: poof 0.6s ease-out forwards;
+  }
+  @keyframes poof {
+    0% { opacity: 1; transform: scale(1); }
+    30% { transform: scale(1.05); background: rgba(122, 140, 92, 0.3); }
+    100% { opacity: 0; transform: scale(0.85) translateX(40px); padding-top: 0; padding-bottom: 0; height: 0; margin: 0; border-width: 0; }
+  }
+
+  .checking .checkbox {
+    background: var(--moss);
+    border-color: var(--moss-light);
+  }
+  .checking .checkbox::after {
+    content: '✓';
+    color: var(--cream);
+    font-weight: bold;
+    font-size: 1rem;
+    animation: pop 0.3s ease-out;
+  }
+  @keyframes pop {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+  }
+
+  /* État vide */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--moss-light);
+    font-style: italic;
+    font-size: 0.95rem;
+    opacity: 0.7;
+  }
+  .empty-state .emoji {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 8px;
+    filter: sepia(0.3);
+  }
+
+  /* Loading */
+  .loading {
+    text-align: center;
+    padding: 30px;
+    color: var(--moss-light);
+    font-style: italic;
+  }
+
+  /* Footer */
+  .footer-note {
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    color: var(--copper);
+    opacity: 0.6;
+    font-size: 1rem;
+    margin-top: 30px;
+  }
+
+  /* Auteur */
+  .who {
+    font-size: 0.7rem;
+    color: var(--moss-light);
+    opacity: 0.6;
+    font-style: italic;
+    margin-left: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Feuilles décoratives -->
+<svg class="leaf leaf-1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <path d="M50 10 Q20 30 25 60 Q35 85 50 90 Q65 85 75 60 Q80 30 50 10 Z" fill="#7a8c5c"/>
+  <path d="M50 15 L50 88" stroke="#4a5d2f" stroke-width="1.5" fill="none"/>
+</svg>
+<svg class="leaf leaf-2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <path d="M50 10 Q20 30 25 60 Q35 85 50 90 Q65 85 75 60 Q80 30 50 10 Z" fill="#a0522d"/>
+  <path d="M50 15 L50 88" stroke="#3d2817" stroke-width="1.5" fill="none"/>
+</svg>
+<svg class="leaf leaf-3" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <path d="M50 10 Q20 30 25 60 Q35 85 50 90 Q65 85 75 60 Q80 30 50 10 Z" fill="#d4a574"/>
+  <path d="M50 15 L50 88" stroke="#3d2817" stroke-width="1.5" fill="none"/>
+</svg>
+
+<div class="container">
+
+  <header>
+    <div class="owls-wrapper">
+      <!-- DEUX HIBOUX EN COUPLE -->
+      <svg class="owls-svg" viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- Branche -->
+        <path d="M10 155 Q120 165 230 155" stroke="#3d2817" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M40 155 L35 165 M80 156 L77 168 M160 156 L163 168 M200 155 L205 165" stroke="#2a1810" stroke-width="2" stroke-linecap="round"/>
+
+        <!-- HIBOU GAUCHE -->
+        <g class="owl-left">
+          <!-- Corps -->
+          <ellipse cx="85" cy="105" rx="42" ry="48" fill="#6b4423"/>
+          <!-- Ventre clair -->
+          <ellipse cx="85" cy="115" rx="26" ry="32" fill="#c9a574"/>
+          <!-- Plumes ventre (petits arcs) -->
+          <path d="M70 100 Q75 105 80 100 M85 100 Q90 105 95 100 M100 100 Q105 105 110 100" stroke="#8b6f47" stroke-width="1" fill="none" opacity="0.6"/>
+          <path d="M68 115 Q73 120 78 115 M82 115 Q87 120 92 115 M96 115 Q101 120 106 115" stroke="#8b6f47" stroke-width="1" fill="none" opacity="0.6"/>
+          <path d="M70 130 Q75 135 80 130 M84 130 Q89 135 94 130 M98 130 Q103 135 108 130" stroke="#8b6f47" stroke-width="1" fill="none" opacity="0.6"/>
+          <!-- Ailes -->
+          <path d="M50 95 Q40 120 55 145 Q60 140 58 100 Z" fill="#5a3818"/>
+          <!-- Tête -->
+          <ellipse cx="85" cy="75" rx="38" ry="35" fill="#6b4423"/>
+          <!-- Touffes oreilles -->
+          <path d="M55 55 L50 35 L65 50 Z" fill="#5a3818"/>
+          <path d="M115 55 L120 35 L105 50 Z" fill="#5a3818"/>
+          <!-- Disques faciaux -->
+          <ellipse cx="73" cy="78" rx="14" ry="17" fill="#e8d4a8"/>
+          <ellipse cx="97" cy="78" rx="14" ry="17" fill="#e8d4a8"/>
+          <!-- Yeux -->
+          <circle class="owl-eye" cx="73" cy="78" r="9" fill="#2a1810"/>
+          <circle class="owl-eye" cx="97" cy="78" r="9" fill="#2a1810"/>
+          <circle cx="75" cy="75" r="2.5" fill="#fff"/>
+          <circle cx="99" cy="75" r="2.5" fill="#fff"/>
+          <!-- Bec -->
+          <path d="M85 88 L80 95 L90 95 Z" fill="#d4a574"/>
+          <!-- Pattes -->
+          <path d="M75 150 L73 158 M75 150 L77 158 M75 150 L75 158" stroke="#d4a574" stroke-width="2" stroke-linecap="round"/>
+          <path d="M95 150 L93 158 M95 150 L97 158 M95 150 L95 158" stroke="#d4a574" stroke-width="2" stroke-linecap="round"/>
+        </g>
+
+        <!-- HIBOU DROITE -->
+        <g class="owl-right">
+          <!-- Corps -->
+          <ellipse cx="155" cy="105" rx="42" ry="48" fill="#7a4a26"/>
+          <!-- Ventre clair -->
+          <ellipse cx="155" cy="115" rx="26" ry="32" fill="#dbb88a"/>
+          <!-- Plumes ventre -->
+          <path d="M140 100 Q145 105 150 100 M155 100 Q160 105 165 100 M170 100 Q175 105 180 100" stroke="#9b7850" stroke-width="1" fill="none" opacity="0.6"/>
+          <path d="M138 115 Q143 120 148 115 M152 115 Q157 120 162 115 M166 115 Q171 120 176 115" stroke="#9b7850" stroke-width="1" fill="none" opacity="0.6"/>
+          <path d="M140 130 Q145 135 150 130 M154 130 Q159 135 164 130 M168 130 Q173 135 178 130" stroke="#9b7850" stroke-width="1" fill="none" opacity="0.6"/>
+          <!-- Ailes -->
+          <path d="M190 95 Q200 120 185 145 Q180 140 182 100 Z" fill="#5a3818"/>
+          <!-- Tête -->
+          <ellipse cx="155" cy="75" rx="38" ry="35" fill="#7a4a26"/>
+          <!-- Touffes oreilles -->
+          <path d="M125 55 L120 35 L135 50 Z" fill="#5a3818"/>
+          <path d="M185 55 L190 35 L175 50 Z" fill="#5a3818"/>
+          <!-- Petite fleur derrière l'oreille (touche féminine) -->
+          <circle cx="125" cy="55" r="4" fill="#b87a8a"/>
+          <circle cx="125" cy="55" r="1.5" fill="#d4a574"/>
+          <!-- Disques faciaux -->
+          <ellipse cx="143" cy="78" rx="14" ry="17" fill="#f0dcb0"/>
+          <ellipse cx="167" cy="78" rx="14" ry="17" fill="#f0dcb0"/>
+          <!-- Yeux avec cils -->
+          <circle class="owl-eye" cx="143" cy="78" r="9" fill="#2a1810"/>
+          <circle class="owl-eye" cx="167" cy="78" r="9" fill="#2a1810"/>
+          <circle cx="145" cy="75" r="2.5" fill="#fff"/>
+          <circle cx="169" cy="75" r="2.5" fill="#fff"/>
+          <!-- Cils -->
+          <path d="M135 70 L132 67 M138 67 L137 64 M172 67 L175 64 M175 70 L178 67" stroke="#2a1810" stroke-width="1.2" stroke-linecap="round"/>
+          <!-- Bec -->
+          <path d="M155 88 L150 95 L160 95 Z" fill="#d4a574"/>
+          <!-- Pattes -->
+          <path d="M145 150 L143 158 M145 150 L147 158 M145 150 L145 158" stroke="#d4a574" stroke-width="2" stroke-linecap="round"/>
+          <path d="M165 150 L163 158 M165 150 L167 158 M165 150 L165 158" stroke="#d4a574" stroke-width="2" stroke-linecap="round"/>
+        </g>
+
+        <!-- Petits cœurs entre eux -->
+        <path d="M115 60 Q113 56 117 56 Q120 56 120 60 Q120 56 123 56 Q127 56 125 60 L120 66 Z" fill="#b87a8a" opacity="0.85">
+          <animate attributeName="opacity" values="0.85;0.3;0.85" dur="2s" repeatCount="indefinite"/>
+        </path>
+        <path d="M120 45 Q118.5 42.5 121.5 42.5 Q123.5 42.5 123.5 45 Q123.5 42.5 125.5 42.5 Q128.5 42.5 127 45 L123.5 49 Z" fill="#b87a8a" opacity="0.6">
+          <animate attributeName="opacity" values="0.6;0.15;0.6" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+        </path>
+      </svg>
+    </div>
+    <h1>Nos Petites Courses</h1>
+    <div class="subtitle">~ la liste de la chouette famille ~</div>
+  </header>
+
+  <form class="add-form" id="addForm" autocomplete="off">
+    <input type="text" id="itemInput" placeholder="ajouter un petit quelque chose..." maxlength="60" required>
+    <button type="submit" class="add-btn" aria-label="Ajouter">+</button>
+  </form>
+
+  <div class="section-label">
+    <span>🌿 à acheter</span>
+    <span class="count" id="count">0</span>
+  </div>
+
+  <ul class="list" id="list">
+    <li class="loading">la forêt s'éveille...</li>
+  </ul>
+
+  <div class="footer-note">fait avec ❤ pour nous deux</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'shopping-list';
+  const list = document.getElementById('list');
+  const form = document.getElementById('addForm');
+  const input = document.getElementById('itemInput');
+  const countEl = document.getElementById('count');
+
+  let items = [];
+
+  function updateCount() {
+    countEl.textContent = items.length;
+  }
+
+  function render() {
+    if (items.length === 0) {
+      list.innerHTML = `
+        <li class="empty-state">
+          <span class="emoji">🌰</span>
+          la liste est vide,<br>les hiboux se reposent...
+        </li>
+      `;
+      updateCount();
+      return;
+    }
+    list.innerHTML = '';
+    items.forEach((item, idx) => {
+      const li = document.createElement('li');
+      li.className = 'item';
+      li.dataset.idx = idx;
+      li.innerHTML = `
+        <div class="checkbox"></div>
+        <div class="item-text">${escapeHtml(item.name)}</div>
+      `;
+      li.addEventListener('click', () => removeItem(idx, li));
+      list.appendChild(li);
+    });
+    updateCount();
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function loadItems() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      items = raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      items = [];
+    }
+    render();
+  }
+
+  function saveItems() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch (e) {
+      console.error('Erreur de sauvegarde', e);
+    }
+  }
+
+  function addItem(name) {
+    items.push({ name: name.trim(), addedAt: Date.now() });
+    saveItems();
+    render();
+  }
+
+  function removeItem(idx, el) {
+    el.classList.add('checking');
+    setTimeout(() => {
+      items.splice(idx, 1);
+      saveItems();
+      render();
+    }, 600);
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const value = input.value.trim();
+    if (!value) return;
+    input.value = '';
+    addItem(value);
+    input.focus();
+  });
+
+  loadItems();
+</script>
+
+</body>
+</html>
